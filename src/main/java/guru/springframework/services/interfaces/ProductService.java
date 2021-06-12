@@ -9,4 +9,8 @@ public interface ProductService {
     List<Product> listAllProducts();
 
     Product getById(Integer id);
+
+    Product saveOrUpdate(Product product);
+
+    void deleteById(Integer id);
 }
