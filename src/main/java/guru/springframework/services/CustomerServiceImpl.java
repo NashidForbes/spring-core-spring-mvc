@@ -4,6 +4,7 @@ import guru.springframework.domain.Customer;
 import guru.springframework.domain.DomainObject;
 import guru.springframework.services.interfaces.CustomerService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Slf4j
 @Service
+@Profile("map")
 public class CustomerServiceImpl extends AbstractMapService implements CustomerService {
 
     public CustomerServiceImpl() {
