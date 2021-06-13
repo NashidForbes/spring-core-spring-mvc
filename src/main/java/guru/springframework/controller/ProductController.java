@@ -22,7 +22,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @RequestMapping({"/products", "product/list"})
+    @RequestMapping({"/products", "/product/list"})
     public String listAllProducts(Model Model) {
         List<Product> allProducts = (List<Product>) productService.listAll();
         Model.addAttribute("allProducts", allProducts);
@@ -58,7 +58,7 @@ public class ProductController {
     public String saveOrUpdateProduct(Product product){
            Product savedProduct = productService.saveOrUpdate(product);
 
-           return "redirect:/v1/product/" + savedProduct.getId();
+        return "redirect:/v1/products";
     }
 
 

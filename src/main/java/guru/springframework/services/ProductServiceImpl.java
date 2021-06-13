@@ -4,6 +4,7 @@ import guru.springframework.domain.DomainObject;
 import guru.springframework.domain.Product;
 import guru.springframework.services.interfaces.ProductService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 @Slf4j
 @Service
+@Profile("map")
 public class ProductServiceImpl extends AbstractMapService implements ProductService {
 
     public ProductServiceImpl() {
