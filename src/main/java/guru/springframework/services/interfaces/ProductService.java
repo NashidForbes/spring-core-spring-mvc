@@ -4,13 +4,6 @@ import guru.springframework.domain.Product;
 
 import java.util.List;
 
-public interface ProductService {
+public interface ProductService extends CRUDService<Product>{
 
-    List<Product> listAllProducts();
-
-    Product getById(Integer id);
-
-    Product saveOrUpdate(Product product);
-
-    void deleteById(Integer id);
 }

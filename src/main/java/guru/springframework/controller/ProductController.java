@@ -22,9 +22,9 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @RequestMapping("/products")
+    @RequestMapping({"/products", "product/list"})
     public String listAllProducts(Model Model) {
-        List<Product> allProducts = productService.listAllProducts();
+        List<Product> allProducts = (List<Product>) productService.listAll();
         Model.addAttribute("allProducts", allProducts);
         return "products";
 

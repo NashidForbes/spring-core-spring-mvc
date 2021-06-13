@@ -8,9 +8,9 @@ import org.mockito.*;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.*;
@@ -41,8 +41,8 @@ public class CustomerControllerTest {
         customers.put(1, new Customer());
         customers.put(2, new Customer());
         //specific Mockito interaction, tell stub to return list of customers
-        when(customerService.listAllCustomers())
-                .thenReturn(new ArrayList<Customer>(customers.values())); //need to
+        when(customerService.listAll())
+                .thenReturn((List)customers.values()); //need to
         // strip generics to
         // keep Mockito happy.
         mockMvc.perform(get("/v1/customers/"))

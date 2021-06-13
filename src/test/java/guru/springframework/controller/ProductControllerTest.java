@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.*;
@@ -41,8 +42,8 @@ public class ProductControllerTest {
         products.put(1, new Product());
         products.put(2, new Product());
         //specific Mockito interaction, tell stub to return list of products
-        when(productService.listAllProducts())
-                .thenReturn(new ArrayList<Product>(products.values())); //need to
+        when(productService.listAll())
+                .thenReturn((List)products.values()); //need to
         // strip generics to
         // keep Mockito happy.
         mockMvc.perform(get("/v1/products/"))

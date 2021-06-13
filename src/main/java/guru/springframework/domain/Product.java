@@ -1,12 +1,19 @@
 package guru.springframework.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 
-public class Product {
- private Integer id;
- private String description;
- private BigDecimal price;
- private String imageUrl;
+@Entity
+public class Product implements DomainObject {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    private String description;
+    private BigDecimal price;
+    private String imageUrl;
 
     public Integer getId() {
         return id;
