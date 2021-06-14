@@ -1,5 +1,6 @@
 package guru.springframework.bootstrap;
 
+import guru.springframework.domain.Address;
 import guru.springframework.domain.Customer;
 import guru.springframework.domain.Product;
 import guru.springframework.services.interfaces.CustomerService;
@@ -67,29 +68,29 @@ public class BootStrap implements CommandLineRunner {
 
     private void loadCustomersData(){
         Customer customer1 = new Customer();
-
-        customer1.setAddressLine1("5 Some new street");
-        customer1.setAddressLine2("Level 9");
-        customer1.setCity("Acapulco");
+        customer1.setBillingAddress(new Address());
+        customer1.getBillingAddress().setAddressLine1("5 Some new street");
+        customer1.getBillingAddress().setAddressLine2("Level 9");
+        customer1.getBillingAddress().setCity("Acapulco");
         customer1.setEmail("customer1@email.com");
         customer1.setFirstName("Edwin");
         customer1.setLastName("Smake");
         customer1.setPhoneNumber("434-433-3434");
-        customer1.setState("NC");
-        customer1.setZipCode("3432PZ");
+        customer1.getBillingAddress().setState("NC");
+        customer1.getBillingAddress().setZipCode("3432PZ");
         customerService.saveOrUpdate(customer1);
 
         Customer customer2 = new Customer();
-
-        customer2.setAddressLine1("13434 Epsilon st.");
-        customer2.setAddressLine2("Level 50");
-        customer2.setCity("Windsor");
+        customer2.setBillingAddress(new Address());
+        customer2.getBillingAddress().setAddressLine1("13434 Epsilon st.");
+        customer2.getBillingAddress().setAddressLine2("Level 50");
+        customer2.getBillingAddress().setCity("Windsor");
         customer2.setEmail("customer2@email.com");
         customer2.setFirstName("Gegan");
         customer2.setLastName("Norson");
         customer2.setPhoneNumber("744-833-5666");
-        customer2.setState("FL");
-        customer2.setZipCode("3432PZ");
+        customer2.getBillingAddress().setState("FL");
+        customer2.getBillingAddress().setZipCode("3432PZ");
         customerService.saveOrUpdate(customer2);
 
     }
