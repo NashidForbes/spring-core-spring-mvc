@@ -7,6 +7,13 @@ public class User implements DomainObject{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    // if User object deleted won't propagate down to Customer object.
+    // only Merge and Persist cascade operations allowed.
+    // protects against accidental deletion of Customer during CRUD delete operations
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private Customer customer;
+
     @Version
     private Integer version;
 
@@ -67,5 +74,14 @@ public class User implements DomainObject{
     @Override
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+        customer.setUser(this);
     }
 }
