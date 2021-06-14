@@ -5,10 +5,12 @@ import guru.springframework.domain.Product;
 import guru.springframework.services.interfaces.CustomerService;
 import guru.springframework.services.interfaces.ProductService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
+// can use the BootStrap class with MapServices or JPADao implementation services
 @Component
 public class BootStrap implements CommandLineRunner {
 
