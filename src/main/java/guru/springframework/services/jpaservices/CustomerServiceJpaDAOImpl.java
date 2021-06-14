@@ -1,4 +1,4 @@
-package guru.springframework.services;
+package guru.springframework.services.jpaservices;
 
 import guru.springframework.domain.Customer;
 import guru.springframework.services.interfaces.CustomerService;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Profile("jpadao")
-public class CustomerServiceJjpaDAOImpl implements CustomerService {
+public class CustomerServiceJpaDAOImpl implements CustomerService {
     private EntityManagerFactory emf;
 
     @PersistenceUnit

@@ -1,4 +1,4 @@
-package guru.springframework.services;
+package guru.springframework.services.mapservices;
 
 import guru.springframework.domain.DomainObject;
 import lombok.extern.slf4j.Slf4j;

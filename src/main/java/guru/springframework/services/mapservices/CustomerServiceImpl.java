@@ -1,4 +1,4 @@
-package guru.springframework.services;
+package guru.springframework.services.mapservices;
 
 import guru.springframework.domain.Customer;
 import guru.springframework.domain.DomainObject;
@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Slf4j

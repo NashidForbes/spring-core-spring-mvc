@@ -1,4 +1,4 @@
-package guru.springframework.services;
+package guru.springframework.services.jpaservices;
 
 import guru.springframework.domain.Product;
 import guru.springframework.services.interfaces.ProductService;
