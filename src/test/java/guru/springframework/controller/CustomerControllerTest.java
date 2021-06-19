@@ -88,9 +88,6 @@ public class CustomerControllerTest {
 
     @Test
     public void testSaveOrUpdate() throws Exception {
-        String addressLine1 = "1 Main St";
-        String addressLine2 = "Apt 301";
-
         Integer id = 1;
         Customer returnCustomer = new Customer();
         returnCustomer.setId(1);

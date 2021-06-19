@@ -2,6 +2,8 @@ package guru.springframework.services.jpaservices;
 
 import guru.springframework.domain.Customer;
 import guru.springframework.services.interfaces.CustomerService;
+import guru.springframework.services.security.EncryptionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,14 @@ import java.util.List;
 @Profile("jpadao")
 public class CustomerServiceJpaDAOImpl implements CustomerService {
     private EntityManagerFactory emf;
+
+    @Autowired
+    public void setEncryptionService(
+            EncryptionService encryptionService) {
+        this.encryptionService = encryptionService;
+    }
+
+    private EncryptionService encryptionService;
 
     @PersistenceUnit
     public void setEmf(EntityManagerFactory emf) {
@@ -36,6 +46,10 @@ public class CustomerServiceJpaDAOImpl implements CustomerService {
     public Customer saveOrUpdate(Customer domainObject) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
+/*        if (domainObject.getUser() != null && domainObject.getUser().getPassword() != null) {
+            domainObject.getUser().setEncryptedPassword(
+                    encryptionService.encryptString(domainObject.getUser().getPassword()));
+        }*/
         Customer savedCustomer = em.merge(domainObject);
         em.getTransaction().commit();
         em.close();

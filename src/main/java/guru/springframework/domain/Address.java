@@ -1,6 +1,7 @@
 package guru.springframework.domain;
 
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
 
 @Embeddable
 public class Address {

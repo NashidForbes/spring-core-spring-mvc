@@ -27,15 +27,15 @@
             </tr>
             <tr th:each="customer : ${allCustomers}">
                 <td th:text="${customer.id}"></td>
-                <td th:text="${customer.addressLine1}"></td>
-                <td th:text="${customer.addressLine2}"></td>
-                <td th:text="${customer.city}"></td>
+                <td th:text="${customer.shippingAddress.addressLine1}"></td>
+                <td th:text="${customer.shippingAddress.addressLine2}"></td>
+                <td th:text="${customer.shippingAddress.city}"></td>
                 <td th:text="${customer.email}"></td>
                 <td th:text="${customer.firstName}"></td>
                 <td th:text="${customer.lastName}"></td>
                 <td th:text="${customer.phoneNumber}"></td>
-                <td th:text="${customer.state}"></td>
-                <td th:text="${customer.zipCode}"></td>
+                <td th:text="${customer.shippingAddress.state}"></td>
+                <td th:text="${customer.shippingAddress.zipCode}"></td>
             </tr>
         </table>
     </div>

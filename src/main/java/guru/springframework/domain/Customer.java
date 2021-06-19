@@ -1,14 +1,12 @@
 package guru.springframework.domain;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 @Entity
-public class Customer implements DomainObject{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    @Version
-    private Integer version;
+public class Customer extends AbstractDomainClass {
     private String firstName;
     private String lastName;
     private String email;
@@ -18,26 +16,12 @@ public class Customer implements DomainObject{
     @Embedded
     private Address billingAddress;
 
-    @OneToOne
+    // if User object deleted won't propagate down to Customer object.
+    // only Merge and Persist cascade operations allowed.
+    // protects against accidental deletion of User during CRUD delete operations
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private User user;
 
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -71,6 +55,10 @@ public class Customer implements DomainObject{
         this.phoneNumber = phoneNumber;
     }
 
+    // if User object deleted won't propagate down to Customer object.
+    // only Merge and Persist cascade operations allowed.
+    // protects against accidental deletion of Customer during CRUD delete operations
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     public User getUser() {
         return user;
     }
