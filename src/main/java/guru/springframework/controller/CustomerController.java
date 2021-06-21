@@ -25,46 +25,42 @@ public class CustomerController {
     public String listAllCustomers(Model Model) {
         List<Customer> allCustomers = (List<Customer>) customerService.listAll();
         Model.addAttribute("allCustomers", allCustomers);
-        return "customers";
+        return "customers/customers";
 
     }
 
     @RequestMapping("/customer/update/{id}")
-    public String editCustomer(@PathVariable String id, Model model){
+    public String editCustomer(@PathVariable String id, Model model) {
         Customer customer = customerService.getById(Integer.parseInt(id));
-
         model.addAttribute("customer", customer);
-
-        return "customerform";
+        return "customers/customerform";
     }
 
 
     @RequestMapping("/customer/get/{id}")
-    public String findCustomerById(@PathVariable String id, Model Model) { Customer customer = customerService.getById(Integer.parseInt(id));
+    public String findCustomerById(@PathVariable String id, Model Model) {
+        Customer customer = customerService.getById(Integer.parseInt(id));
         Model.addAttribute("customer", customer);
-        return "customer";
+        return "customers/customer";
 
     }
 
     @RequestMapping("/customer/new")
-    public String newCustomer(Model model){
+    public String newCustomer(Model model) {
         model.addAttribute("customer", new Customer());
-
-        return "customerform";
+        return "customers/customerform";
     }
 
     @RequestMapping(value = "/customer", method = RequestMethod.POST)
-    public String saveOrUpdateCustomer(Customer customer){
+    public String saveOrUpdateCustomer(Customer customer) {
         Customer savedCustomer = customerService.saveOrUpdate(customer);
-
-        return "redirect:/v1/customer/" + savedCustomer.getId();
+        return "redirect:/v1/customer/get/" + savedCustomer.getId();
     }
 
-
+    // not functional, cascade type bounded to User object, merge and persist operations only.
     @RequestMapping(value = "/customer/delete", method = RequestMethod.POST)
-    public String editCustomer(Customer customer){
+    public String editCustomer(Customer customer) {
         customerService.deleteById(customer.getId());
-
         return "redirect:/v1/customers";
     }
 }

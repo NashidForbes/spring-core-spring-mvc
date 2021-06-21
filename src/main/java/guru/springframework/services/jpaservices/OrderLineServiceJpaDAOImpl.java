@@ -1,8 +1,8 @@
 package guru.springframework.services.jpaservices;
 
-import guru.springframework.domain.Customer;
+import guru.springframework.domain.OrderLine;
 import guru.springframework.domain.User;
-import guru.springframework.services.interfaces.CustomerService;
+import guru.springframework.services.interfaces.OrderLineService;
 import guru.springframework.services.security.EncryptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -15,15 +15,16 @@ import java.util.List;
 
 @Service
 @Profile("jpadao")
-public class CustomerServiceJpaDAOImpl implements CustomerService {
+public class OrderLineServiceJpaDAOImpl implements OrderLineService {
     private EntityManagerFactory emf;
-    private EncryptionService encryptionService;
 
-    @Autowired
+    @Autowired  // injected third party encryption service from
     public void setEncryptionService(
             EncryptionService encryptionService) {
         this.encryptionService = encryptionService;
     }
+
+    private EncryptionService encryptionService;
 
     @PersistenceUnit
     public void setEmf(EntityManagerFactory emf) {
@@ -33,50 +34,43 @@ public class CustomerServiceJpaDAOImpl implements CustomerService {
     @Override
     public List<?> listAll() {
         EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        List<Customer> customers = em.createQuery("from Customer", Customer.class).getResultList();
-        em.getTransaction().commit();
-        em.close();
-        return customers;
+        return em.createQuery("from OrderLine", OrderLine.class).getResultList();
     }
 
     @Override
-    public Customer getById(Integer id) {
+    public OrderLine getById(Integer id) {
         EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        Customer customer = em.find(Customer.class, id);
-        em.getTransaction().commit();
-        em.close();
-        return customer;
+        return em.find(OrderLine.class, id);
     }
 
     @Override
-    public Customer saveOrUpdate(Customer domainObject) {
+    public OrderLine saveOrUpdate(OrderLine domainObject) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        if (domainObject.getUser() != null && domainObject.getUser().getPassword() != null) {
-            domainObject.getUser().setEncryptedPassword(
-                    encryptionService.encryptString(domainObject.getUser().getPassword()));
-        }
-        Customer savedCustomer = em.merge(domainObject);
+        OrderLine savedOrderLine = em.merge(domainObject);
         em.getTransaction().commit();
         em.close();
-        return savedCustomer;
+        return savedOrderLine;
     }
 
     @Override
     public void deleteById(Integer id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        Customer customer = em.find(Customer.class, id);
-        User user = em.find(User.class, customer.getUser().getId());
-        // for bidirectional relationships between customer and user
-        // need to sever the relationship links.
-        customer.setUser(null);
-        //user.setCustomer(null);
-        em.remove(customer);
+        em.remove(em.find(OrderLine.class, id));
         em.getTransaction().commit();
         em.close();
 
+    }
+
+    @Override
+    public List<OrderLine> listAllByOrderId(String orderId) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        List<OrderLine> orderLines = em.createQuery("from OrderLine where Order_Id = " + orderId,
+                OrderLine.class).getResultList();
+        em.getTransaction().commit();
+        em.close();
+        return orderLines;
     }
 }

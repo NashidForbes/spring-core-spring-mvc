@@ -1,5 +1,7 @@
 package guru.springframework.domain;
 
+import org.springframework.lang.Nullable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -20,8 +22,13 @@ public class Customer extends AbstractDomainClass {
     // only Merge and Persist cascade operations allowed.
     // protects against accidental deletion of User during CRUD delete operations
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @Nullable
     private User user;
 
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -55,10 +62,6 @@ public class Customer extends AbstractDomainClass {
         this.phoneNumber = phoneNumber;
     }
 
-    // if User object deleted won't propagate down to Customer object.
-    // only Merge and Persist cascade operations allowed.
-    // protects against accidental deletion of Customer during CRUD delete operations
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     public User getUser() {
         return user;
     }

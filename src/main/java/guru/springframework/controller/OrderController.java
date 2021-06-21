@@ -24,55 +24,43 @@ public class OrderController {
     @RequestMapping({"/orders", "/order/list"})
     public String listAllOrders(Model Model) {
         List<Order> allOrders = (List<Order>) orderService.listAll();
-        Model.addAttribute("allOrders", allOrders);
-        return "orders";
-
-    }
-
-    @RequestMapping({"/orders/{id}/orderlines", "/order/{id}/orderlines/list"})
-    public String listAllOrderLines(Model Model) {
-        List<Order> allOrders = (List<Order>) orderService.listAll();
-        Model.addAttribute("allOrders", allOrders);
-        return "orders";
+        Model.addAttribute("orders", allOrders);
+        return "orders/orders";
 
     }
 
     @RequestMapping("/order/update/{id}")
-    public String editOrder(@PathVariable String id, Model model){
+    public String editOrder(@PathVariable String id, Model model) {
         Order order = orderService.getById(Integer.parseInt(id));
-
         model.addAttribute("order", order);
-
-        return "orderform";
+        return "orders/orderform";
     }
 
 
     @RequestMapping("/order/get/{id}")
-    public String findOrderById(@PathVariable String id, Model Model) { Order order = orderService.getById(Integer.parseInt(id));
+    public String findOrderById(@PathVariable String id, Model Model) {
+        Order order = orderService.getById(Integer.parseInt(id));
         Model.addAttribute("order", order);
-        return "order";
+        return "orders/order";
 
     }
 
     @RequestMapping("/order/new")
-    public String newOrder(Model model){
+    public String newOrder(Model model) {
         model.addAttribute("order", new Order());
-
-        return "orderform";
+        return "orders/orderform";
     }
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)
-    public String saveOrUpdateOrder(Order order){
+    public String saveOrUpdateOrder(Order order) {
         Order savedOrder = orderService.saveOrUpdate(order);
-
         return "redirect:/v1/order/" + savedOrder.getId();
     }
 
 
     @RequestMapping(value = "/order/delete", method = RequestMethod.POST)
-    public String editOrder(Order order){
+    public String editOrder(Order order) {
         orderService.deleteById(order.getId());
-
         return "redirect:/v1/orders";
     }
 }

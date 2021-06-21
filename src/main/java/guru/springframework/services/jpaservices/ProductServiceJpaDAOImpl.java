@@ -24,13 +24,21 @@ public class ProductServiceJpaDAOImpl implements ProductService {
     @Override
     public List<?> listAll() {
         EntityManager em = emf.createEntityManager();
-        return em.createQuery("from Product", Product.class).getResultList();
+        em.getTransaction().begin();
+        List<Product> products =  em.createQuery("from Product", Product.class).getResultList();
+        em.getTransaction().commit();
+        em.close();
+        return products;
     }
 
     @Override
     public Product getById(Integer id) {
         EntityManager em = emf.createEntityManager();
-        return em.find(Product.class, id);
+        em.getTransaction().begin();
+        Product product = em.find(Product.class, id);
+        em.getTransaction().commit();
+        em.close();
+        return product;
     }
 
     @Override

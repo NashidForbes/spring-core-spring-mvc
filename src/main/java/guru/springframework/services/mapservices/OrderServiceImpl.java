@@ -1,6 +1,5 @@
 package guru.springframework.services.mapservices;
 
-import guru.springframework.domain.Order;
 import guru.springframework.domain.DomainObject;
 import guru.springframework.domain.Order;
 import guru.springframework.domain.OrderLine;
@@ -15,7 +14,7 @@ import java.util.Map;
 @Slf4j
 @Service
 @Profile("map")
-public class OrderServiceImpl extends AbstractMapService  implements OrderService {
+public class OrderServiceImpl extends AbstractMapService implements OrderService {
 
     protected Map<Integer, DomainObject> OrderLinesMap;
 
@@ -54,21 +53,6 @@ public class OrderServiceImpl extends AbstractMapService  implements OrderServic
 
     @Override
     protected void loadDomainObjects() {
-
     }
 
-    @Override
-    public List<OrderLine> listAllOrderLines(Integer orderId) {
-        return null;
-    }
-
-    @Override
-    public OrderLine addOrderLine(Integer orderId, OrderLine orderLine) {
-        Order orderItem = getById(orderId);
-        orderItem.getOrderLines().add(orderLine);
-        orderLine.setOrder(orderItem);
-        Integer itemIndex = orderItem.getOrderLines().indexOf(orderLine);
-        log.info("Order line item with id: " + orderLine.getId() + " added.");
-        return  orderItem.getOrderLines().get(itemIndex);
-    }
 }

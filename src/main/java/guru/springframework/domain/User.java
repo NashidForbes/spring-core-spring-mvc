@@ -1,8 +1,10 @@
 package guru.springframework.domain;
 
 import jdk.jfr.Timestamp;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.constraints.Null;
 import java.util.Date;
 
 @Entity
@@ -11,12 +13,13 @@ public class User extends AbstractDomainClass{
     // only Merge and Persist cascade operations allowed.
     // protects against accidental deletion of Customer during CRUD delete operations
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @Nullable
     private Customer customer;
 
     private String username;
 
-/*    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private Cart cart;*/
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
 
     @Transient
     private String password;
@@ -67,11 +70,11 @@ public class User extends AbstractDomainClass{
     }
 
 
-/*    public Cart getCart() {
+    public Cart getCart() {
         return cart;
     }
 
     public void setCart(Cart cart) {
         this.cart = cart;
-    }*/
+    }
 }

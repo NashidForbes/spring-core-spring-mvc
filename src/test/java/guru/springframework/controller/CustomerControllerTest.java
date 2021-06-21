@@ -48,7 +48,7 @@ public class CustomerControllerTest {
         // keep Mockito happy.
         mockMvc.perform(get("/v1/customers/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("customers"))
+                .andExpect(view().name("customers/customers"))
                 .andExpect(model().attribute("allCustomers", hasSize(2)));
 
     }
@@ -60,7 +60,7 @@ public class CustomerControllerTest {
         when(customerService.getById(id)).thenReturn(new Customer());
         mockMvc.perform(get("/v1/customer/get/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("customer"))
+                .andExpect(view().name("customers/customer"))
                 .andExpect(model().attribute("customer", instanceOf(Customer.class)));
     }
 
@@ -71,7 +71,7 @@ public class CustomerControllerTest {
         when(customerService.getById(id)).thenReturn(new Customer());
         mockMvc.perform(get("/v1/customer/update/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("customerform"))
+                .andExpect(view().name("customers/customerform"))
                 .andExpect(model().attribute("customer", instanceOf(Customer.class)));
     }
 
@@ -82,7 +82,7 @@ public class CustomerControllerTest {
         verifyZeroInteractions(customerService);
         mockMvc.perform(get("/v1/customer/new"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("customerform"))
+                .andExpect(view().name("customers/customerform"))
                 .andExpect(model().attribute("customer", instanceOf(Customer.class)));
     }
 
@@ -104,31 +104,38 @@ public class CustomerControllerTest {
         when(customerService.saveOrUpdate(Matchers.<Customer>any())).thenReturn(returnCustomer);
         mockMvc.perform(post("/v1/customer")
                 .param("id", returnCustomer.getId().toString())
-                .param("addressLine1",  returnCustomer.getBillingAddress().getAddressLine1())
-                .param("addressLine2", returnCustomer.getBillingAddress().getAddressLine2())
-                .param("city", returnCustomer.getBillingAddress().getCity())
+                .param("billingAddress.addressLine1",
+                        returnCustomer.getBillingAddress().getAddressLine1())
+                .param("billingAddress.addressLine2", returnCustomer.getBillingAddress().getAddressLine2())
+                .param("billingAddress.city", returnCustomer.getBillingAddress().getCity())
                 .param("email", returnCustomer.getEmail())
                 .param("firstName",  returnCustomer.getFirstName())
                 .param("lastName", returnCustomer.getLastName())
                 .param("phoneNumber", returnCustomer.getPhoneNumber())
-                .param("state", returnCustomer.getBillingAddress().getState())
-                .param("zipCode", returnCustomer.getBillingAddress().getZipCode()))
+                .param("billingAddress.state", returnCustomer.getBillingAddress().getState())
+                .param("billingAddress.zipCode", returnCustomer.getBillingAddress().getZipCode()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/v1/customer/1"))
+                .andExpect(view().name("redirect:/v1/customer/get/1"))
                 .andExpect(model().attribute("customer", instanceOf(Customer.class)))
                 .andExpect(model().attribute("customer", hasProperty("id", is(returnCustomer.getId()))))
 
-                .andExpect(model().attribute("customer", hasProperty("addressLine1",
-                        is(returnCustomer.getBillingAddress().getAddressLine1()))))
-                .andExpect(model().attribute("customer", hasProperty("addressLine2", is(returnCustomer.getBillingAddress().getAddressLine2()))))
-                .andExpect(model().attribute("customer", hasProperty("city", is(returnCustomer.getBillingAddress().getCity()))))
+                .andExpect(model().attribute("customer", hasProperty("billingAddress",
+                        hasProperty("addressLine1",
+                                is(returnCustomer.getBillingAddress().getAddressLine1())))))
+                .andExpect(model().attribute("customer", hasProperty("billingAddress",
+                        hasProperty("addressLine2",
+                                is(returnCustomer.getBillingAddress().getAddressLine2())))))
+                .andExpect(model().attribute("customer", hasProperty("billingAddress",
+                        hasProperty("city",is(returnCustomer.getBillingAddress().getCity())))))
                 .andExpect(model().attribute("customer", hasProperty("email", is(returnCustomer.getEmail()))))
                 .andExpect(model().attribute("customer", hasProperty("firstName",  is(returnCustomer.getFirstName()))))
                 .andExpect(model().attribute("customer", hasProperty("lastName", is(returnCustomer.getLastName()))))
                 .andExpect(model().attribute("customer", hasProperty("phoneNumber", is(returnCustomer.getPhoneNumber()))))
-                .andExpect(model().attribute("customer", hasProperty("state", is(returnCustomer.getBillingAddress().getState()))))
-                .andExpect(model().attribute("customer", hasProperty("zipCode",
-                        is(returnCustomer.getBillingAddress().getZipCode()))));
+                .andExpect(model().attribute("customer", hasProperty("billingAddress",
+                        hasProperty("city",is(returnCustomer.getBillingAddress().getCity())))))
+                .andExpect(model().attribute("customer", hasProperty("billingAddress",
+                        hasProperty("zipCode",
+                                is(returnCustomer.getBillingAddress().getZipCode())))));
         //verify properties of bound object
         ArgumentCaptor<Customer> boundCustomer = ArgumentCaptor.forClass(Customer.class);
         verify(customerService).saveOrUpdate(boundCustomer.capture());
@@ -144,7 +151,8 @@ public class CustomerControllerTest {
         assertEquals(returnCustomer.getBillingAddress().getZipCode(), boundCustomer.getValue().getBillingAddress().getZipCode());
     }
 
-    @Test
+    // no deletes for Customer object or User object.
+/*    @Test
     public void testDelete() throws Exception {
         Integer id = 1;
         mockMvc.perform(post("/v1/customer/delete")
@@ -153,5 +161,5 @@ public class CustomerControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/v1/customers"));
         verify(customerService, times(1)).deleteById(id);
-    }
+    }*/
 }

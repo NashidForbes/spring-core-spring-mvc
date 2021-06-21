@@ -26,7 +26,7 @@ public class ProductController {
     public String listAllProducts(Model Model) {
         List<Product> allProducts = (List<Product>) productService.listAll();
         Model.addAttribute("allProducts", allProducts);
-        return "products";
+        return "products/products";
 
     }
 
@@ -36,14 +36,14 @@ public class ProductController {
 
         model.addAttribute("product", product);
 
-        return "productform";
+        return "products/productform";
     }
 
 
     @RequestMapping("/product/get/{id}")
     public String findProductById(@PathVariable String id, Model Model) { Product product = productService.getById(Integer.parseInt(id));
         Model.addAttribute("product", product);
-        return "product";
+        return "products/product";
 
     }
 
@@ -51,7 +51,7 @@ public class ProductController {
     public String newProduct(Model model){
         model.addAttribute("product", new Product());
 
-        return "productform";
+        return "products/productform";
     }
 
     @RequestMapping(value = "/product", method = RequestMethod.POST)

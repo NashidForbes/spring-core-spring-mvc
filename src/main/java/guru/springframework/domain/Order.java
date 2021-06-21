@@ -1,5 +1,6 @@
 package guru.springframework.domain;
 
+import guru.springframework.enums.OrderStatus;
 import jdk.jfr.Timestamp;
 
 import javax.persistence.*;
@@ -17,6 +18,8 @@ public class Order extends AbstractDomainClass {
     private Customer customer;
     @Embedded
     private Address shippingToAddress;
+
+    private OrderStatus orderStatus;
 
     @Timestamp
     private Date shipped;
@@ -51,5 +54,23 @@ public class Order extends AbstractDomainClass {
 
     public void setShipped(Date shipped) {
         this.shipped = shipped;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void addToOrderLines(OrderLine orderLine){
+        orderLine.setOrder(this);
+        orderLines.add(orderLine);
+    }
+
+    public void removeOrderLine(OrderLine orderLine){
+        orderLine.setOrder(null);
+        orderLines.remove(orderLine);
+    }
+    
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

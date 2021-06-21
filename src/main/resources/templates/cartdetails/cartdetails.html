@@ -11,31 +11,25 @@
     <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
             th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 
-    <link href="../static/css/spring-core.css"
+    <link href="../../static/css/spring-core.css"
           th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
 <div class="container">
-    <div th:if="${not #lists.isEmpty(allCustomers)}">
-        <h2>Customer List</h2>
+    <div th:if="${not #lists.isEmpty(cartdetails)}">
+        <h2>Cart List</h2>
         <table class="table table-striped">
             <tr>
                 <th>Id</th>
+                <th>Image</th>
                 <th>Description</th>
                 <th>Price</th>
-                <th>Image URL</th>
             </tr>
-            <tr th:each="customer : ${allCustomers}">
-                <td th:text="${customer.id}"></td>
-                <td th:text="${customer.shippingAddress.addressLine1}"></td>
-                <td th:text="${customer.shippingAddress.addressLine2}"></td>
-                <td th:text="${customer.shippingAddress.city}"></td>
-                <td th:text="${customer.email}"></td>
-                <td th:text="${customer.firstName}"></td>
-                <td th:text="${customer.lastName}"></td>
-                <td th:text="${customer.phoneNumber}"></td>
-                <td th:text="${customer.shippingAddress.state}"></td>
-                <td th:text="${customer.shippingAddress.zipCode}"></td>
+            <tr th:each="cartdetail : ${cartdetails}">
+                <td th:text="${cartdetail.id}"></td>
+                <td th:text="${cartdetail.product.imageUrl}"></td>
+                <td th:text="${cartdetail.product.description}"></td>
+                <td th:text="${cartdetail.product.price}"></td>
             </tr>
         </table>
     </div>

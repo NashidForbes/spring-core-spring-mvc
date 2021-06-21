@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Core Online Tutorial - Show Product</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <link href="../../static/css/spring-core.css"
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+</head>
+<body>
+<div class="container">
+    <form class="form-horizontal" th:object="${cart}" th:action="@{/v1/cart/delete}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{version}"/>
+        <div class="row">
+            <button type="submit" class="btn btn-default">Delete</button>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Shopping Cart</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Cart Order Id:</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static" th:text="${cart.user.id} ">Order Id</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">First Name:</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static" th:text="${cart.user.customer.firstName}">First Name</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Last Name:</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static" th:text="${cart.user.customer.lastName}">Last Name</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Quantity:</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static" th:text="${cart.quantity}">Quantity</p>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="container">
+                <div th:if="${not #lists.isEmpty(cartdetails)}">
+                    <h2>Cart Details List</h2>
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Id</th>
+                            <th>Quantity</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Details</th>
+                        </tr>
+                        <tr th:each="cartdetail : ${cartdetails}">
+                            <td th:text="${cartdetail.id}"></td>
+                            <td th:text="${cartdetail.cart.quantity}"></td>
+                            <td th:text="${cartdetail.product.description}"></td>
+                            <td th:text="${cartdetail.product.price}"></td>
+                            <td>
+                                <a th:href="@{'/v1/cartdetail/get/' +  ${cartdetail.id}}">Cart Details</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

@@ -11,12 +11,12 @@
     <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
             th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 
-    <link href="../static/css/spring-core.css"
+    <link href="../../static/css/spring-core.css"
           th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
 <div class="container">
-    <form class="form-horizontal" th:object="${customer}" th:action="@{/v1/customer/delete}" method="post">
+    <form class="form-horizontal" th:object="${order}" th:action="@{/v1/order/delete}" method="post">
         <input type="hidden" th:field="*{id}"/>
         <div class="row">
             <button type="submit" class="btn btn-default">Delete</button>
@@ -30,57 +30,54 @@
             <div class="col-sm-8">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Product Id:</label>
+                        <label class="col-sm-2 control-label">Order Id:</label>
                         <div class="col-sm-10">
-                            <p class="form-control-static" th:text="${customer.id}">Product Id</p>
+                            <p class="form-control-static" th:text="${order.id}">Order Id</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">First Name:</label>
+                        <label class="col-sm-2 control-label">Order Status:</label>
                         <div class="col-sm-10">
-                            <p class="form-control-static" th:text="${customer.firstName}">First Name</p>
+                            <p class="form-control-static" th:text="${order.orderStatus}">status</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Last Name:</label>
+                        <label class="col-sm-2 control-label">Shipping Date:</label>
                         <div class="col-sm-10">
-                            <p class="form-control-static" th:text="${customer.lastName}">Last Name</p>
+                            <p class="form-control-static" th:text="${order.shipped}">shipped</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Address Line 1:</label>
+                        <h2 class="col-sm-2 sm-2">Shipping Address:</h2>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 sm-2 control-label">Shipping Address Line 1:</label>
                         <div class="col-sm-10">
-                            <p class="form-control-static" th:text="${customer.addressLine1}">Address Line 1</p>
+                            <p class="form-control-static" th:text="${order.shippingToAddress.addressLine1}">address</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Address Line 2:</label>
+                        <label class="col-sm-2 sm-2 control-label">Shipping Address Line 2:</label>
                         <div class="col-sm-10">
-                            <p class="form-control-static" th:text="${customer.addressLine2}">Address Line 2</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Zip code:</label>
-                        <div class="col-sm-10">
-                            <p class="form-control-static" th:text="${customer.zipCode}">Zip code</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">State:</label>
-                        <div class="col-sm-10">
-                            <p class="form-control-static" th:text="${customer.state}">State</p>
+                            <p class="form-control-static" th:text="${order.shippingToAddress.addressLine1}">address</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 sm-2 control-label">City:</label>
                         <div class="col-sm-10">
-                            <p class="form-control-static" th:text="${customer.city}">City</p>
+                            <p class="form-control-static" th:text="${order.shippingToAddress.city}">address</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 sm-2 control-label">Email:</label>
+                        <label class="col-sm-2 sm-2 control-label">State:</label>
                         <div class="col-sm-10">
-                            <p class="form-control-static" th:text="${customer.email}">Email</p>
+                            <p class="form-control-static" th:text="${order.shippingToAddress.state}">address</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 sm-2 control-label">Zipcode:</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static" th:text="${order.shippingToAddress.zipCode}">address</p>
                         </div>
                     </div>
                 </form>

@@ -1,21 +1,31 @@
 package guru.springframework.services.jpaservices;
 
-import guru.springframework.domain.Order;
-import guru.springframework.domain.Order;
-import guru.springframework.domain.OrderLine;
-import guru.springframework.services.interfaces.OrderService;
+import guru.springframework.domain.CartDetail;
+import guru.springframework.domain.CartDetail;
+import guru.springframework.services.interfaces.CartDetailService;
+import guru.springframework.services.interfaces.CartDetailService;
+import guru.springframework.services.security.EncryptionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import javax.persistence.Query;
 import java.util.List;
 
 @Service
 @Profile("jpadao")
-public class OrderServiceJpaDAOImpl implements OrderService {
+public class CartDetailServiceJpaDAOImpl implements CartDetailService {
     private EntityManagerFactory emf;
+    private EncryptionService encryptionService;
+
+    @Autowired  // injected third party encryption service from
+    public void setEncryptionService(
+            EncryptionService encryptionService) {
+        this.encryptionService = encryptionService;
+    }
 
     @PersistenceUnit
     public void setEmf(EntityManagerFactory emf) {
@@ -26,40 +36,40 @@ public class OrderServiceJpaDAOImpl implements OrderService {
     public List<?> listAll() {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        List<Order> orders = em.createQuery("from Order", Order.class).getResultList();
+        List<CartDetail> carts = em.createQuery("from CartDetail", CartDetail.class).getResultList();
         em.getTransaction().commit();
         em.close();
-        return orders;
+        return carts;
     }
 
     @Override
-    public Order getById(Integer id) {
+    public CartDetail getById(Integer id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        Order order = em.find(Order.class, id);
+        CartDetail cart = em.find(CartDetail.class, id);
         em.getTransaction().commit();
         em.close();
-        return order;
+        return cart;
     }
 
     @Override
-    public Order saveOrUpdate(Order domainObject) {
+    public CartDetail saveOrUpdate(CartDetail domainObject) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        Order savedOrder = em.merge(domainObject);
+        CartDetail savedCartDetail = em.merge(domainObject);
         em.getTransaction().commit();
         em.close();
-        return savedOrder;
+        return savedCartDetail;
     }
 
     @Override
     public void deleteById(Integer id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.createQuery("delete from OrderLine where OrderLine.order_id = " + id, OrderLine.class);
-        em.remove(em.find(Order.class, id));
+        em.remove(em.find(CartDetail.class, id));
         em.getTransaction().commit();
         em.close();
 
     }
+
 }

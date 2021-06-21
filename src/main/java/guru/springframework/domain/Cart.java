@@ -1,10 +1,10 @@
 package guru.springframework.domain;
 
-import jdk.jfr.Timestamp;
-
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -23,6 +23,7 @@ public class Cart extends AbstractDomainClass {
     }
 
     public void setUser(User user) {
+        user.setCart(this);
         this.user = user;
     }
 
@@ -40,6 +41,16 @@ public class Cart extends AbstractDomainClass {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public void addCartDetail(CartDetail cartDetail) {
+        cartDetails.add(cartDetail);
+        cartDetail.setCart(this);
+    }
+
+    public void removeCartDetail(CartDetail cartDetail) {
+        cartDetail.setCart(null);
+        this.cartDetails.remove(cartDetail);
     }
 
 }
