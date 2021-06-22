@@ -65,6 +65,6 @@ public class CartController {
     @RequestMapping(value = "/cart/delete", method = RequestMethod.POST)
     public String editCart(Cart cart) {
         cartService.deleteById(cart.getId());
-        return "redirect:/v1/cart";
+        return "redirect:/v1/customer/list";
     }
 }

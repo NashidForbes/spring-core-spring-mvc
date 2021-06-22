@@ -1,8 +1,10 @@
 package guru.springframework.bootstrap;
 
 import guru.springframework.domain.*;
+import guru.springframework.domain.security.Role;
 import guru.springframework.enums.OrderStatus;
 import guru.springframework.services.interfaces.*;
+import guru.springframework.services.security.RoleService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -19,18 +21,21 @@ public class BootStrap implements CommandLineRunner {
     private final UserService userService;
     private final OrderService orderService;
     private final CartService cartService;
+    private final RoleService roleService;
 
     public BootStrap(ProductService productService,
                      CustomerService customerService,
                      UserService userService,
                      OrderService orderService,
                      OrderLineService orderLineService,
-                     CartService cartService) {
+                     CartService cartService,
+                     RoleService roleService) {
         this.productService = productService;
         this.customerService = customerService;
         this.userService = userService;
         this.orderService = orderService;
         this.cartService = cartService;
+        this.roleService = roleService;
     }
 
     @Override
@@ -40,10 +45,32 @@ public class BootStrap implements CommandLineRunner {
 
 
     private void loadData() {
+        loadRoles();
         loadProductsData();
         loadUserCustomersData();
+        assignUsersToDefaultRole();
         loadUserCartData();
         loadOrderData();
+    }
+
+    private void assignUsersToDefaultRole() {
+        List<Role> roles = (List<Role>) roleService.listAll();
+        List<User> users = (List<User>) userService.listAll();
+
+        roles.forEach(role ->{
+            if(role.getRole().equalsIgnoreCase("CUSTOMER")){
+                users.forEach(user -> {
+                    user.addRole(role);
+                    userService.saveOrUpdate(user);
+                });
+            }
+        });
+    }
+
+    private void loadRoles() {
+        Role role = new Role();
+        role.setRole("CUSTOMER");
+        roleService.saveOrUpdate(role);
     }
 
     private void loadProductsData() {
