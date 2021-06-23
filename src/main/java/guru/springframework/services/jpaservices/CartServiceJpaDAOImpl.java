@@ -78,7 +78,7 @@ public class CartServiceJpaDAOImpl implements CartService {
         Query query = em.createQuery("SELECT cd FROM CartDetail cd WHERE cd.cart.id = :cart_id");
         query.setParameter("cart_id", Integer.parseInt(id));
         List<CartDetail> cartDetails = query.getResultList();
-                em.getTransaction().commit();
+        em.getTransaction().commit();
         em.close();
         return cartDetails;
     }
