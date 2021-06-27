@@ -43,7 +43,7 @@
                 <td th:text="${customer.phoneNumber}"></td>
                 <td th:text="${customer.shippingAddress.state}"></td>
                 <td th:text="${customer.shippingAddress.zipCode}"></td>
-                <td><a th:href="@{'/v1/cart/get/' + ${customer.user.cart.id}}">Cart</a></td>
+                <td th:if="${customer.user.cart != null}"><a th:href="@{'/v1/cart/get/' + ${customer.user.cart.id}}">Cart</a></td>
             </tr>
         </table>
     </div>

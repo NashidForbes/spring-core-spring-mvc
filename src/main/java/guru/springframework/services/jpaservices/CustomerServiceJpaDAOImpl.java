@@ -68,13 +68,7 @@ public class CustomerServiceJpaDAOImpl implements CustomerService {
     public void deleteById(Integer id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        Customer customer = em.find(Customer.class, id);
-        User user = em.find(User.class, customer.getUser().getId());
-        // for bidirectional relationships between customer and user
-        // need to sever the relationship links.
-        customer.setUser(null);
-        //user.setCustomer(null);
-        em.remove(customer);
+        em.remove(em.find(Customer.class, id));
         em.getTransaction().commit();
         em.close();
 

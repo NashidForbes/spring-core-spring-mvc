@@ -2,6 +2,7 @@ package guru.springframework.services.jpaservices;
 
 import guru.springframework.domain.Cart;
 import guru.springframework.domain.CartDetail;
+import guru.springframework.domain.User;
 import guru.springframework.services.interfaces.CartService;
 import guru.springframework.services.security.EncryptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -62,9 +64,23 @@ public class CartServiceJpaDAOImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Integer id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
+        Cart cart = em.find(Cart.class, id);
+        User user = em.find(User.class, cart.getUser().getId());
+        // for bidirectional relationships between cart and user
+        // need to sever the relationship links.
+        user.setCart(null);
+        //cart.setUser(null);
+        Query query = em.createQuery("delete FROM CartDetail cd WHERE cd.cart.id = :cart_id");
+        query.setParameter("cart_id", id);
+        // TODO figure out how to get delete count
+/*
+        System.out.println(String.valueOf(results.size()) + " Items deleted from :" + CartDetail.class.getCanonicalName());
+*/
+        em.merge(user);
         em.remove(em.find(Cart.class, id));
         em.getTransaction().commit();
         em.close();
